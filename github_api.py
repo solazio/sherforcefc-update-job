@@ -11,9 +11,28 @@ class GitHubCommit:
 
     def __init__(self):
         self.api_url = "https://api.github.com"
-        self.access_token = os.environ.get()("GITHUB_TOKEN")
+        self.access_token = os.environ.get("GITHUB_TOKEN")
         self.today = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
+        self.get_file_sha()
         self.update_file()
+
+    def get_file_sha(self):
+        try:
+            with open("file_sha.txt", "r") as f:
+                self.file_sha = f.read().rstrip("\n")
+            f.close()
+        except Exception:
+            self.file_sha = None
+            print("The file 'file_sha.txt' has no content!")
+
+    def update_file_sha(self):
+        try:
+            with open("file_sha.txt", "w") as f:
+                f.write(self.file_sha)
+            f.close()
+        except Exception:
+            self.file_sha = None
+            print("Something went wrong while updating 'file_sha.txt'!")
 
     def update_file(self):
         if self.access_token:
@@ -32,7 +51,7 @@ class GitHubCommit:
 
         if content:
             try:
-                requests.put(
+                resp = requests.put(
                     f"{self.api_url}/repos/solazio/sherforcefc.co.uk/contents/"
                     "src/pages/index.md",
                     headers=headers,
@@ -41,8 +60,13 @@ class GitHubCommit:
                         "branch": "master",
                         "message": f"UpdateBot - {self.today}",
                         "content": content,
-                        "sha": "de583194428973323a668faa0aec68e03c7c4064",
+                        "sha": self.file_sha,
                     },
                 )
+
+                print(resp.json())
+                self.file_sha = resp.json().get("content").get("sha")
+                self.update_file_sha()
             except Exception as e:
                 print(e)
+        return self.file_sha
