@@ -4,12 +4,13 @@ from bs4 import BeautifulSoup
 
 class GetWebsiteData:
     """
-    Get the table data from the url below:
-    https://fulltime-league.thefa.com/ProcessPublicSelect.do?psSelectedSeason=997972047&psSelectedDivision=193785606&psSelectedCompetition=0&psSelectedLeague=2113065
+    Get the table data from an FA url
     """
 
     def __init__(self):
-        self.URL = "https://fulltime-league.thefa.com/ProcessPublicSelect.do?psSelectedSeason=997972047&psSelectedDivision=193785606&psSelectedCompetition=0&psSelectedLeague=2113065"
+        self.URL = "https://fulltime-league.thefa.com/ProcessPublicSelect.do"
+        "?psSelectedSeason=997972047&psSelectedDivision=193785606&psSelected"
+        "Competition=0&psSelectedLeague=2113065"
         self.write_data_to_file()
 
     def fetch_data(self):
