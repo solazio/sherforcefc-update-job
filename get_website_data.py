@@ -8,7 +8,11 @@ class GetWebsiteData:
     """
 
     def __init__(self):
-        self.URL = "https://fulltime-league.thefa.com/ProcessPublicSelect.do?psSelectedSeason=997972047&psSelectedDivision=193785606&psSelectedCompetition=0&psSelectedLeague=2113065"
+        self.URL = (
+            "https://fulltime-league.thefa.com/ProcessPublic"
+            "Select.do?psSelectedSeason=997972047&psSelectedDivision=193785606"
+            "&psSelectedCompetition=0&psSelectedLeague=2113065"
+        )
         self.write_data_to_file()
 
     def fetch_data(self):
