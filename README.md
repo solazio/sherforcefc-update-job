@@ -15,7 +15,7 @@ https://docs.github.com/en/free-pro-team@latest/rest/guides/getting-started-with
 http://www.levibotelho.com/development/commit-a-file-with-the-github-api/
 
 
-To run it locally add the following lines to the github_api.py
+To run it locally add the following lines to github_api.py
 ```
 from dotenv import load_dotenv
 

@@ -36,14 +36,18 @@ class GitHubCommit:
 
     def update_file(self):
         if self.access_token:
-            headers = {"Authorization": f"token {self.access_token}"}
+            headers = {
+                "Accept": "application/vnd.github.v3+json",
+                "Authorization": f"token {self.access_token}",
+            }
         else:
             headers = {}
 
         try:
             with open("info.md", "rb") as f:
                 # Encode file content to base64
-                content = base64.b64encode(f.read())
+                file_content = f.read()
+                content = base64.b64encode(file_content).decode("utf-8")
             f.close()
         except Exception:
             content = None
@@ -52,8 +56,8 @@ class GitHubCommit:
         if content:
             try:
                 resp = requests.put(
-                    f"{self.api_url}/repos/solazio/sherforcefc.co.uk/contents/"
-                    "src/pages/index.md",
+                    f"{self.api_url}/repos/solazio/sherforcefc.co.uk/"
+                    "contents/src/pages/index.md",
                     headers=headers,
                     params={},
                     json={
@@ -65,8 +69,7 @@ class GitHubCommit:
                 )
 
                 print(resp.json())
-                self.file_sha = resp.json().get("content").get("sha")
+                self.file_sha = resp.json()["content"]["sha"]
                 self.update_file_sha()
             except Exception as e:
                 print(e)
-        return self.file_sha
