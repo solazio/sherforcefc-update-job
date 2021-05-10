@@ -68,8 +68,12 @@ class GitHubCommit:
                     },
                 )
 
-                print(resp.json())
-                self.file_sha = resp.json()["content"]["sha"]
-                self.update_file_sha()
+                if resp.status_code == 200:
+                    print(resp.json())
+                    self.file_sha = resp.json()["content"]["sha"]
+                    self.update_file_sha()
+                else:
+                    print("There are no changes to commit.")
+
             except Exception as e:
                 print(e)
